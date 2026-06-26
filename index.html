@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kappa Delta — Member Portal</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#4a7c59;--gl:#e8f0eb;--gm:#c2d9c9;--gd:#3d6849;--pearl:#f5f4f0;
+  --bg:#fff;--bg2:#f7f6f2;--bg3:#f0efe9;
+  --text:#1a1a1a;--text2:#555;--text3:#999;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --success:#2e7d52;--success-bg:#e8f5ee;
+  --warn:#8a5f00;--warn-bg:#fdf3da;
+  --danger:#a32d2d;--danger-bg:#fcebeb;
+  --info:#185fa5;--info-bg:#e6f1fb;
+  --radius:8px;--radius-lg:12px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#1e1e1e;--bg2:#252525;--bg3:#1a1a1a;
+    --text:#f0f0f0;--text2:#aaa;--text3:#666;
+    --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.18);
+    --gl:#1e3328;--gm:#2a4d38;--pearl:#1a1a1a;
+  }
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--pearl);color:var(--text);min-height:100vh;}
+.hidden{display:none!important;}
+
+/* LOGIN */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;background:var(--pearl);}
+.login-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem;width:100%;max-width:380px;}
+.kd-logo{text-align:center;margin-bottom:2rem;}
+.kd-letters{font-size:36px;font-weight:600;color:var(--g);letter-spacing:6px;}
+.kd-name{font-size:13px;color:var(--text2);margin-top:6px;}
+.login-card label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px;}
+.login-card input{width:100%;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--bg);color:var(--text);margin-bottom:1rem;outline:none;}
+.login-card input:focus{border-color:var(--g);}
+.login-btn{width:100%;background:var(--g);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-size:15px;font-weight:500;cursor:pointer;}
+.login-btn:hover{background:var(--gd);}
+.login-err{color:var(--danger);font-size:13px;margin-bottom:1rem;display:none;}
+.hint{font-size:12px;color:var(--text3);text-align:center;margin-top:1rem;}
+
+/* PORTAL SHELL */
+.portal-screen{display:none;flex-direction:column;min-height:100vh;}
+.topbar{background:var(--g);color:#fff;padding:0.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-l{display:flex;align-items:center;gap:12px;}
+.tb-letters{font-size:18px;letter-spacing:4px;font-weight:600;}
+.tb-name{font-size:13px;font-weight:500;}
+.tb-sub{font-size:11px;opacity:.75;}
+.tb-r{display:flex;align-items:center;gap:10px;}
+.tb-user{font-size:13px;opacity:.9;}
+.icon-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:var(--radius);padding:5px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.icon-btn:hover{background:rgba(255,255,255,.25);}
+.cart-count{background:#fff;color:var(--g);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;}
+
+.nav{background:var(--bg);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:57px;z-index:99;}
+.nav::-webkit-scrollbar{height:0;}
+.nav-tab{padding:0.75rem 1.1rem;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:color .15s;}
+.nav-tab:hover{color:var(--g);}
+.nav-tab.active{color:var(--g);border-bottom-color:var(--g);font-weight:500;}
+
+.content{padding:1.5rem;max-width:900px;margin:0 auto;width:100%;flex:1;}
+.section{display:none;}
+.section.active{display:block;}
+.sec-title{font-size:17px;font-weight:600;margin-bottom:1.25rem;}
+
+/* CARDS */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
+.card-title{font-size:14px;font-weight:600;margin-bottom:0.75rem;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;}
+.badge{font-size:11px;padding:3px 10px;border-radius:var(--radius);font-weight:500;}
+.badge-g{background:var(--gl);color:var(--gd);}
+.badge-a{background:var(--warn-bg);color:var(--warn);}
+.badge-r{background:var(--danger-bg);color:var(--danger);}
+.badge-s{background:var(--success-bg);color:var(--success);}
+.badge-i{background:var(--info-bg);color:var(--info);}
+
+.row{display:flex;align-items:center;gap:12px;padding:0.7rem 0;border-bottom:1px solid var(--border);}
+.row:last-child{border-bottom:none;}
+.rsub{font-size:12px;color:var(--text2);margin-top:2px;}
+
+/* BUTTONS */
+.btn{padding:7px 16px;border-radius:var(--radius);font-size:13px;cursor:pointer;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-weight:500;}
+.btn:hover{background:var(--bg2);}
+.btn-g{background:var(--g);color:#fff;border-color:var(--g);}
+.btn-g:hover{background:var(--gd);}
+.btn-ghost{background:var(--bg2);color:var(--text2);border-color:var(--border);}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.grid-merch{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;}
+.grid-media{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+
+/* HOME */
+.stand-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem;text-align:center;cursor:pointer;transition:border-color .15s;}
+.stand-card:hover{border-color:var(--gm);}
+.stand-icon{font-size:26px;margin-bottom:6px;}
+.stand-label{font-size:11px;color:var(--text2);}
+.stand-val{font-size:13px;font-weight:600;margin-top:4px;}
+.meal-widget{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;cursor:pointer;transition:border-color .15s;}
+.meal-widget:hover{border-color:var(--gm);}
+.meal-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+.meal-desc{font-size:13px;color:var(--text2);margin-bottom:12px;}
+.yn-btn{padding:6px 18px;border-radius:var(--radius);font-size:13px;cursor:pointer;border:1px solid var(--border2);background:var(--bg);color:var(--text);}
+.yn-btn.yes-style{background:var(--gl);color:var(--gd);border-color:var(--gm);}
+.yn-btn.no-style{background:var(--danger-bg);color:var(--danger);border-color:#f09595;}
+.yn-btn.sel-yes{background:var(--g);color:#fff;border-color:var(--g);}
+.yn-btn.sel-no{background:var(--danger);color:#fff;border-color:var(--danger);}
+.cal-widget{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;cursor:pointer;transition:border-color .15s;}
+.cal-widget:hover{border-color:var(--gm);}
+
+/* DATE BOX */
+.date-box{min-width:44px;text-align:center;background:var(--gl);border-radius:var(--radius);padding:4px 6px;}
+.date-box .mo{font-size:9px;color:var(--g);text-transform:uppercase;letter-spacing:1px;}
+.date-box .dy{font-size:19px;font-weight:700;color:var(--g);line-height:1.1;}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-hdr{font-size:10px;color:var(--text3);text-align:center;padding:4px 0;}
+.cal-cell{min-height:56px;border:1px solid var(--border);border-radius:var(--radius);padding:4px 6px;background:var(--bg);}
+.cal-cell.today{border-color:var(--g);}
+.cal-cell.empty{background:var(--bg2);border-color:transparent;}
+.cal-num{font-size:12px;font-weight:600;margin-bottom:2px;}
+.cal-num.today{color:var(--g);}
+.cal-ev{font-size:9px;background:var(--gl);color:var(--gd);border-radius:3px;padding:1px 4px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* MEALS */
+.meal-row{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--border);}
+.meal-row:last-child{border-bottom:none;}
+
+/* MERCH */
+.merch-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:border-color .15s;}
+.merch-card:hover{border-color:var(--gm);}
+.merch-img{height:140px;background:var(--gl);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);}
+.merch-body{padding:0.85rem;}
+.merch-name{font-size:13px;font-weight:600;margin-bottom:2px;}
+.merch-sub{font-size:11px;color:var(--text2);margin-bottom:10px;}
+.merch-footer{display:flex;align-items:center;justify-content:space-between;}
+.merch-price{font-size:15px;font-weight:700;color:var(--g);}
+.size-pills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
+.size-pill{font-size:11px;padding:2px 8px;border:1px solid var(--border2);border-radius:var(--radius);cursor:pointer;color:var(--text2);background:var(--bg);}
+.size-pill.sel{background:var(--g);color:#fff;border-color:var(--g);}
+
+/* CART */
+.cart-item{display:flex;align-items:center;gap:12px;padding:0.75rem 0;border-bottom:1px solid var(--border);}
+.cart-item:last-child{border-bottom:none;}
+.ci-icon{width:42px;height:42px;background:var(--gl);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qty-ctrl{display:flex;align-items:center;gap:6px;}
+.qty-btn{width:24px;height:24px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--bg2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text);}
+.qty-btn:hover{background:var(--gl);}
+.qty-num{font-size:13px;font-weight:600;min-width:20px;text-align:center;}
+
+/* EXEC */
+.exec-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;}
+.exec-av{width:48px;height:48px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--g);margin-bottom:10px;}
+
+/* MEDIA */
+.media-cell{aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--gl);}
+.media-cell img{width:100%;height:100%;object-fit:cover;}
+.add-cell{border:2px dashed var(--gm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;background:var(--gl);}
+.add-cell:hover{background:var(--gm);}
+.add-cell span{font-size:12px;color:var(--g);font-weight:500;}
+
+/* ANNOUNCEMENTS */
+.ann{border-left:3px solid var(--g);padding:0.85rem 1rem;margin-bottom:0.75rem;background:var(--gl);border-radius:0 var(--radius) var(--radius) 0;}
+.ann-title{font-size:14px;font-weight:600;color:var(--gd);}
+.ann-body{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.6;}
+.ann-date{font-size:11px;color:var(--text3);margin-top:5px;}
+
+/* PROFILE */
+.prof-av{width:64px;height:64px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--g);}
+.pf{background:var(--bg2);border-radius:var(--radius);padding:0.85rem 1rem;}
+.pf-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.pf-val{font-size:14px;font-weight:600;}
+
+/* SIGNUP */
+.su-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:0.85rem;}
+.pill{font-size:12px;background:var(--gl);color:var(--gd);padding:3px 10px;border-radius:var(--radius);}
+
+/* STANDING */
+.req-row{display:flex;align-items:center;gap:12px;padding:0.7rem 0;border-bottom:1px solid var(--border);}
+.req-row:last-child{border-bottom:none;}
+
+/* FILTER */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;}
+.filter-pill{font-size:12px;padding:5px 14px;border:1px solid var(--border2);border-radius:var(--radius);cursor:pointer;color:var(--text2);background:var(--bg);}
+.filter-pill.active{background:var(--g);color:#fff;border-color:var(--g);}
+.filter-pill:hover:not(.active){background:var(--bg2);}
+
+/* METRIC */
+.metric{background:var(--bg2);border-radius:var(--radius);padding:1rem;}
+.metric-label{font-size:12px;color:var(--text2);margin-bottom:5px;}
+.metric-val{font-size:24px;font-weight:700;}
+
+/* ORDER SUCCESS */
+.order-success{background:var(--gl);border:1px solid var(--gm);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;margin-bottom:1rem;display:none;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .grid-merch{grid-template-columns:repeat(2,1fr);}
+  .grid-media{grid-template-columns:repeat(3,1fr);}
+  .content{padding:1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="kd-logo">
+      <div class="kd-letters">ΚΔ</div>
+      <div class="kd-name">Kappa Delta — Member Portal</div>
+    </div>
+    <div class="login-err" id="loginErr">Incorrect credentials. Please try again.</div>
+    <label for="emailIn">Email address</label>
+    <input type="email" id="emailIn" placeholder="sister@chapter.com"/>
+    <label for="passIn">Password</label>
+    <input type="password" id="passIn" placeholder="••••••••"/>
+    <button class="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="hint">Demo password: kappadelta</div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div class="portal-screen" id="portalScreen">
+  <div class="topbar">
+    <div class="topbar-l">
+      <span class="tb-letters">ΚΔ</span>
+      <div><div class="tb-name">Kappa Delta</div><div class="tb-sub">Member Portal</div></div>
+    </div>
+    <div class="tb-r">
+      <button class="icon-btn" onclick="showTab('merch',navTabFor('merch'))">
+        <i class="ti ti-shopping-bag"></i> Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <span class="tb-user" id="tbUser"></span>
+      <button class="icon-btn" onclick="doLogout()"><i class="ti ti-logout"></i> Sign out</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-tab active" onclick="showTab('home',this)"><i class="ti ti-home"></i> Home</div>
+    <div class="nav-tab" onclick="showTab('news',this)"><i class="ti ti-speakerphone"></i> News</div>
+    <div class="nav-tab" onclick="showTab('meals',this)"><i class="ti ti-tools-kitchen-2"></i> Meals</div>
+    <div class="nav-tab" onclick="showTab('calendar',this)"><i class="ti ti-calendar"></i> Calendar</div>
+    <div class="nav-tab" onclick="showTab('signups',this)"><i class="ti ti-clipboard-list"></i> Sign-ups</div>
+    <div class="nav-tab" onclick="showTab('dues',this)"><i class="ti ti-coin"></i> Dues</div>
+    <div class="nav-tab" onclick="showTab('minutes',this)"><i class="ti ti-notes"></i> Minutes</div>
+    <div class="nav-tab" onclick="showTab('exec',this)"><i class="ti ti-address-book"></i> Exec board</div>
+    <div class="nav-tab" onclick="showTab('media',this)"><i class="ti ti-photo"></i> Media</div>
+    <div class="nav-tab" onclick="showTab('standing',this)"><i class="ti ti-shield-check"></i> Standing</div>
+    <div class="nav-tab" onclick="showTab('merch',this)"><i class="ti ti-shirt"></i> Merch</div>
+    <div class="nav-tab" onclick="showTab('profile',this)"><i class="ti ti-user"></i> Profile</div>
+  </div>
+
+  <div class="content">
+
+    <!-- HOME -->
+    <div class="section active" id="sec-home">
+      <div class="sec-title">Good morning, <span id="homeName"></span> 🌿</div>
+      <div class="grid-3" style="margin-bottom:1.25rem;">
+        <div class="stand-card" onclick="showTab('standing',navTabFor('standing'))">
+          <div class="stand-icon"><i class="ti ti-school" style="color:var(--g)"></i></div>
+          <div class="stand-label">Academic</div>
+          <div class="stand-val" style="color:var(--success)">Good standing</div>
+        </div>
+        <div class="stand-card" onclick="showTab('standing',navTabFor('standing'))">
+          <div class="stand-icon"><i class="ti ti-coin" style="color:var(--warn)"></i></div>
+          <div class="stand-label">Financial</div>
+          <div class="stand-val" style="color:var(--warn)">Balance due</div>
+        </div>
+        <div class="stand-card" onclick="showTab('standing',navTabFor('standing'))">
+          <div class="stand-icon"><i class="ti ti-shield-check" style="color:var(--g)"></i></div>
+          <div class="stand-label">Conduct</div>
+          <div class="stand-val" style="color:var(--success)">Good standing</div>
+        </div>
+      </div>
+      <div class="meal-widget" onclick="showTab('meals',navTabFor('meals'))">
+        <div class="card-head">
+          <div class="card-title"><i class="ti ti-tools-kitchen-2" style="color:var(--g);margin-right:5px;"></i>Tonight's dinner</div>
+          <span class="badge badge-g">6:30 PM</span>
+        </div>
+        <div class="meal-name">Lemon herb chicken with roasted vegetables</div>
+        <div class="meal-desc">Chapter house dining room</div>
+        <div style="display:flex;gap:10px;" onclick="event.stopPropagation()">
+          <button class="yn-btn yes-style" id="homeYes" onclick="homeRSVP('yes',this)">Attending</button>
+          <button class="yn-btn no-style" id="homeNo" onclick="homeRSVP('no',this)">Not attending</button>
+        </div>
+      </div>
+      <div class="cal-widget" onclick="showTab('calendar',navTabFor('calendar'))">
+        <div class="card-head">
+          <div class="card-title"><i class="ti ti-calendar" style="color:var(--g);margin-right:5px;"></i>Today — June 26</div>
+          <span style="font-size:12px;color:var(--g);">Full calendar <i class="ti ti-arrow-right"></i></span>
+        </div>
+        <div class="row">
+          <div class="date-box"><div class="mo">JUN</div><div class="dy">26</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600;">Chapter social mixer</div><div class="rsub"><i class="ti ti-clock" style="font-size:12px"></i> 7:00 PM · The Rooftop</div></div>
+          <span class="badge badge-g">Social</span>
+        </div>
+        <div class="row">
+          <div class="date-box"><div class="mo">JUN</div><div class="dy">26</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600;">Study hours check-in</div><div class="rsub"><i class="ti ti-clock" style="font-size:12px"></i> 3:00 PM · Library</div></div>
+          <span class="badge badge-a">Academic</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="section" id="sec-news">
+      <div class="sec-title">Announcements</div>
+      <div class="ann"><div class="ann-title">Formal recruitment dates confirmed</div><div class="ann-body">Recruitment week is set for August 18–23. All active members are required to attend orientation on August 17. Reach out to the VP of Recruitment with any conflicts.</div><div class="ann-date">June 24, 2026</div></div>
+      <div class="ann"><div class="ann-title">Philanthropy fundraiser goal reached!</div><div class="ann-body">We hit $4,200 for Prevent Child Abuse America this semester. Thank you to every sister who volunteered and donated. Proud of you all!</div><div class="ann-date">June 20, 2026</div></div>
+      <div class="ann"><div class="ann-title">Chapter house summer cleaning</div><div class="ann-body">Sign up for a Saturday cleaning slot in June or July. Each member is required to complete at least one shift. Sign-up sheet is pinned in the sisters' GroupMe.</div><div class="ann-date">June 15, 2026</div></div>
+      <div class="ann"><div class="ann-title">Fall merch order deadline approaching</div><div class="ann-body">Order by July 15 to receive your items before the start of fall semester. Visit the merch page to browse and place your order.</div><div class="ann-date">June 10, 2026</div></div>
+    </div>
+
+    <!-- MEALS -->
+    <div class="section" id="sec-meals">
+      <div class="sec-title">Meals</div>
+      <div class="card">
+        <div class="card-title">Today — June 26</div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Breakfast</div><div class="rsub">Avocado toast & fresh fruit · 8:00 AM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Lunch</div><div class="rsub">Caesar salad & tomato soup · 12:00 PM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Dinner</div><div class="rsub">Lemon herb chicken & roasted vegetables · 6:30 PM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Tomorrow — June 27</div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Breakfast</div><div class="rsub">Pancakes & bacon · 8:00 AM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Lunch</div><div class="rsub">Grilled chicken wraps · 12:00 PM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+        <div class="meal-row"><div><div style="font-size:14px;font-weight:600;">Dinner</div><div class="rsub">Pasta night · 6:30 PM</div></div><div style="display:flex;gap:8px;"><button class="yn-btn yes-style" onclick="rsvpMeal(this,'yes')">Yes</button><button class="yn-btn no-style" onclick="rsvpMeal(this,'no')">No</button></div></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="section" id="sec-calendar">
+      <div class="sec-title">June 2026</div>
+      <div class="card">
+        <div class="cal-grid" style="margin-bottom:6px;">
+          <div class="cal-hdr">Sun</div><div class="cal-hdr">Mon</div><div class="cal-hdr">Tue</div><div class="cal-hdr">Wed</div><div class="cal-hdr">Thu</div><div class="cal-hdr">Fri</div><div class="cal-hdr">Sat</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Upcoming events</div>
+        <div class="row"><div class="date-box"><div class="mo">JUN</div><div class="dy">26</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">Chapter social mixer</div><div class="rsub">7:00 PM · The Rooftop</div></div><span class="badge badge-g">Social</span></div>
+        <div class="row"><div class="date-box"><div class="mo">JUL</div><div class="dy">4</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">4th of July social</div><div class="rsub">6:00 PM · The Rooftop</div></div><span class="badge badge-g">Social</span></div>
+        <div class="row"><div class="date-box"><div class="mo">JUL</div><div class="dy">12</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">Chapter meeting</div><div class="rsub">7:00 PM · Chapter house</div></div><span class="badge badge-a">Required</span></div>
+        <div class="row"><div class="date-box"><div class="mo">JUL</div><div class="dy">15</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">Merch order deadline</div><div class="rsub">Fall semester order cutoff</div></div><span class="badge badge-r">Deadline</span></div>
+        <div class="row"><div class="date-box"><div class="mo">AUG</div><div class="dy">17</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">Recruitment orientation</div><div class="rsub">10:00 AM · Chapter house</div></div><span class="badge badge-a">All actives</span></div>
+        <div class="row"><div class="date-box"><div class="mo">AUG</div><div class="dy">23</div></div><div style="flex:1"><div style="font-size:14px;font-weight:600;">Bid day!</div><div class="rsub">2:00 PM · University quad</div></div><span class="badge badge-g">Recruitment</span></div>
+      </div>
+    </div>
+
+    <!-- SIGN-UPS -->
+    <div class="section" id="sec-signups">
+      <div class="sec-title">Event sign-ups</div>
+      <div id="suList"></div>
+    </div>
+
+    <!-- DUES -->
+    <div class="section" id="sec-dues">
+      <div class="sec-title">Dues tracker</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.25rem;">
+        <div class="metric"><div class="metric-label">Semester dues</div><div class="metric-val">$450</div></div>
+        <div class="metric"><div class="metric-label">Amount paid</div><div class="metric-val" style="color:var(--success)">$225</div></div>
+        <div class="metric"><div class="metric-label">Balance due</div><div class="metric-val" style="color:var(--warn)">$225</div></div>
+        <div class="metric"><div class="metric-label">Due date</div><div class="metric-val" style="font-size:18px;margin-top:4px;">Aug 1</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Payment history</div>
+        <div class="row"><i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i><div style="flex:1"><div style="font-size:14px;font-weight:600;">Spring installment 1</div><div class="rsub">Feb 1, 2026</div></div><span style="font-weight:700;color:var(--success);">$225</span></div>
+        <div class="row"><i class="ti ti-clock" style="color:var(--warn);font-size:20px;"></i><div style="flex:1"><div style="font-size:14px;font-weight:600;">Fall installment 1</div><div class="rsub">Due Aug 1, 2026</div></div><span style="font-weight:700;color:var(--warn);">$225</span></div>
+      </div>
+    </div>
+
+    <!-- MINUTES -->
+    <div class="section" id="sec-minutes">
+      <div class="sec-title">Meeting minutes</div>
+      <div class="card"><div id="minutesList"></div></div>
+    </div>
+
+    <!-- EXEC BOARD -->
+    <div class="section" id="sec-exec">
+      <div class="sec-title">Executive board</div>
+      <div class="grid-2" id="execGrid"></div>
+    </div>
+
+    <!-- MEDIA -->
+    <div class="section" id="sec-media">
+      <div class="sec-title">Chapter media</div>
+      <div class="filter-row" id="albumFilters">
+        <button class="filter-pill active" onclick="setAlbum('all',this)">All photos</button>
+        <button class="filter-pill" onclick="setAlbum('social',this)">Socials</button>
+        <button class="filter-pill" onclick="setAlbum('philanthropy',this)">Philanthropy</button>
+        <button class="filter-pill" onclick="setAlbum('recruitment',this)">Recruitment</button>
+      </div>
+      <div class="grid-media" id="mediaGrid"></div>
+      <input type="file" id="photoInput" accept="image/*" onchange="addPhoto(event)"/>
+      <p style="font-size:12px;color:var(--text3);margin-top:0.75rem;">Click the + tile to upload a photo to this album.</p>
+    </div>
+
+    <!-- STANDING -->
+    <div class="section" id="sec-standing">
+      <div class="sec-title">Your standing</div>
+      <div class="card">
+        <div class="row"><div style="flex:1"><div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;"><i class="ti ti-school" style="color:var(--g)"></i> Academic</div><div class="rsub">GPA: 3.4 · Requirement: 2.5 minimum</div></div><span class="badge badge-s">Good standing</span></div>
+        <div class="row"><div style="flex:1"><div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;"><i class="ti ti-coin" style="color:var(--warn)"></i> Financial</div><div class="rsub">Balance due: $225 by August 1, 2026</div></div><span class="badge badge-a">Balance due</span></div>
+        <div class="row"><div style="flex:1"><div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;"><i class="ti ti-shield-check" style="color:var(--g)"></i> Conduct</div><div class="rsub">No active violations · Risk training completed</div></div><span class="badge badge-s">Good standing</span></div>
+        <div class="row"><div style="flex:1"><div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;"><i class="ti ti-users" style="color:var(--g)"></i> Attendance</div><div class="rsub">8 of 9 meetings attended this semester</div></div><span class="badge badge-s">Good standing</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Requirements checklist</div>
+        <div class="req-row"><i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i><div style="flex:1;font-size:14px;">Risk management training</div><span style="font-size:12px;color:var(--text2);">Completed Apr 28</span></div>
+        <div class="req-row"><i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i><div style="flex:1;font-size:14px;">Philanthropy hours (min 5 hrs)</div><span style="font-size:12px;color:var(--text2);">8 hrs logged</span></div>
+        <div class="req-row"><i class="ti ti-circle-check" style="color:var(--success);font-size:20px;"></i><div style="flex:1;font-size:14px;">House cleaning shift</div><span style="font-size:12px;color:var(--text2);">Completed Jun 7</span></div>
+        <div class="req-row"><i class="ti ti-circle" style="color:var(--warn);font-size:20px;"></i><div style="flex:1;font-size:14px;">Dues payment — fall installment</div><span style="font-size:12px;color:var(--warn);">Due Aug 1</span></div>
+      </div>
+    </div>
+
+    <!-- MERCH -->
+    <div class="section" id="sec-merch">
+      <div class="sec-title">Chapter merchandise</div>
+      <div class="filter-row" id="merchFilters">
+        <button class="filter-pill active" onclick="filterMerch('all',this)">All items</button>
+        <button class="filter-pill" onclick="filterMerch('apparel',this)">Apparel</button>
+        <button class="filter-pill" onclick="filterMerch('accessories',this)">Accessories</button>
+        <button class="filter-pill" onclick="filterMerch('drinkware',this)">Drinkware</button>
+      </div>
+      <div class="grid-merch" id="merchGrid"></div>
+      <div class="card" style="margin-top:0.5rem;">
+        <div class="card-head"><div class="card-title"><i class="ti ti-shopping-bag" style="color:var(--g);margin-right:5px;"></i>Your cart</div><span class="badge badge-g" id="cartBadge">0 items</span></div>
+        <div class="order-success" id="orderSuccess">
+          <i class="ti ti-circle-check" style="font-size:36px;color:var(--g);display:block;margin-bottom:8px;"></i>
+          <div style="font-size:16px;font-weight:700;color:var(--gd);margin-bottom:5px;">Order submitted!</div>
+          <div style="font-size:13px;color:var(--text2);">Your order has been sent to the merch chair. You'll receive a confirmation soon.</div>
+        </div>
+        <div id="cartItems"><div style="font-size:13px;color:var(--text3);padding:1rem 0;text-align:center;">Your cart is empty</div></div>
+        <div id="cartTotal" style="display:none;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.25rem;flex-direction:row;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--text2);">Total</span>
+          <span style="font-size:18px;font-weight:700;color:var(--g);" id="cartTotalVal">$0.00</span>
+        </div>
+        <button class="btn btn-g" id="orderBtn" disabled onclick="submitOrder()" style="width:100%;margin-top:1rem;padding:11px;">Place order</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Order deadlines</div>
+        <div class="row"><i class="ti ti-clock" style="color:var(--warn);font-size:20px;"></i><div style="flex:1"><div style="font-size:14px;font-weight:600;">Fall semester order</div><div class="rsub">Order by July 15 for delivery before rush</div></div><span class="badge badge-a">July 15</span></div>
+        <div class="row"><i class="ti ti-clock" style="color:var(--text3);font-size:20px;"></i><div style="flex:1"><div style="font-size:14px;font-weight:600;">Bid day welcome packages</div><div class="rsub">New member merch order</div></div><span class="badge badge-g">Aug 1</span></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="section" id="sec-profile">
+      <div class="sec-title">My profile</div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+          <div class="prof-av" id="profAv">--</div>
+          <div><div style="font-size:20px;font-weight:700;" id="profName">--</div><div style="font-size:13px;color:var(--text2);">Active member · Kappa Delta</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="pf"><div class="pf-label">Grade</div><div class="pf-val">Junior (3rd year)</div></div>
+          <div class="pf"><div class="pf-label">Seniority</div><div class="pf-val">Sigma class · Fall 2023</div></div>
+          <div class="pf"><div class="pf-label">Big sister</div><div class="pf-val">Emma Thompson</div></div>
+          <div class="pf"><div class="pf-label">Little sister</div><div class="pf-val">Layla Chen</div></div>
+          <div class="pf"><div class="pf-label">Family line</div><div class="pf-val">Daisy family</div></div>
+          <div class="pf"><div class="pf-label">Chapter role</div><div class="pf-val">Philanthropy committee</div></div>
+          <div class="pf" style="grid-column:1/-1;"><div class="pf-label">Major</div><div class="pf-val">Communications & Psychology</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const EXEC=[
+  {init:'SR',name:'Sophia Rivera',role:'President',email:'s.rivera@kd.org',phone:'(555) 201-4432'},
+  {init:'AL',name:'Avery Lin',role:'VP Membership',email:'a.lin@kd.org',phone:'(555) 202-7751'},
+  {init:'MK',name:'Madison Kim',role:'VP Recruitment',email:'m.kim@kd.org',phone:'(555) 203-9820'},
+  {init:'JP',name:'Julia Park',role:'Treasurer',email:'j.park@kd.org',phone:'(555) 204-3310'},
+  {init:'CN',name:'Claire Nguyen',role:'Secretary',email:'c.nguyen@kd.org',phone:'(555) 205-6678'},
+  {init:'BH',name:'Brooke Hayes',role:'Philanthropy Chair',email:'b.hayes@kd.org',phone:'(555) 206-4421'},
+  {init:'RL',name:'Riley Lawson',role:'Risk Management',email:'r.lawson@kd.org',phone:'(555) 207-3390'},
+  {init:'NC',name:'Natalie Cruz',role:'Academic Chair',email:'n.cruz@kd.org',phone:'(555) 208-5512'},
+];
+const MINUTES=[
+  {title:'Chapter meeting — June 14, 2026',body:'Attendance: 32/38 members present. Philanthropy fundraiser recap — $4,200 raised, exceeded goal by $700. Recruitment dates confirmed Aug 18–23; all members must attend Aug 17 orientation. House cleaning sign-ups now open. Treasurer reminder: fall dues due Aug 1. Next meeting: July 12.'},
+  {title:'Chapter meeting — May 17, 2026',body:'Attendance: 35/38 members present. Elections recap: new exec board introduced. Philanthropy chairs presented spring event plan. Academic chair announced GPA recognition for sisters with 3.7+. End-of-year banquet planned May 30 at The Garden Room. Motion passed: approve spring philanthropy budget of $800.'},
+  {title:'Chapter meeting — Apr 19, 2026',body:'Attendance: 29/38 members present. Philanthropy walk-a-thon debrief. Risk management training reminder — all members must complete by April 30. Spring formal confirmed: May 9 at The Grand Ballroom. Ritual committee update. House rules review: parking, quiet hours.'},
+];
+const SU=[
+  {id:1,name:'Chapter social mixer',meta:'June 26 · 7:00 PM · The Rooftop',names:['Emma T.','Ava M.','Lily R.','Grace K.','Zoe P.','Mia S.','Chloe B.','Nora H.','Ella W.','Sophie L.','Hannah J.','Layla C.']},
+  {id:2,name:'Rooftop 4th of July social',meta:'July 4 · 6:00 PM · The Rooftop',names:['Emma T.','Ava M.','Grace K.','Mia S.','Chloe B.','Ella W.','Sophie L.','Hannah J.']},
+  {id:3,name:'Philanthropy bake sale',meta:'July 19 · 10:00 AM · Student Union',names:['Lily R.','Zoe P.','Nora H.','Layla C.','Sophie L.']},
+];
+const MERCH=[
+  {id:1,name:'ΚΔ classic hoodie',sub:'Embroidered Greek letters',price:45,cat:'apparel',sizes:['XS','S','M','L','XL'],icon:'ti-shirt'},
+  {id:2,name:'ΚΔ crewneck sweatshirt',sub:'Olive green · chapter crest',price:40,cat:'apparel',sizes:['XS','S','M','L','XL'],icon:'ti-shirt'},
+  {id:3,name:'Chapter tee',sub:'Soft cotton · pearl white',price:22,cat:'apparel',sizes:['XS','S','M','L','XL'],icon:'ti-shirt'},
+  {id:4,name:'Bid day tank',sub:'Recruitment edition 2026',price:18,cat:'apparel',sizes:['XS','S','M','L'],icon:'ti-shirt'},
+  {id:5,name:'ΚΔ tote bag',sub:'Canvas · screen printed',price:16,cat:'accessories',sizes:null,icon:'ti-shopping-bag'},
+  {id:6,name:'Enamel pin set',sub:'3 ΚΔ designs',price:12,cat:'accessories',sizes:null,icon:'ti-star'},
+  {id:7,name:'Satin scrunchie pack',sub:'Olive & pearl · set of 3',price:10,cat:'accessories',sizes:null,icon:'ti-circle'},
+  {id:8,name:'Chapter lanyard',sub:'ΚΔ logo · with card holder',price:8,cat:'accessories',sizes:null,icon:'ti-credit-card'},
+  {id:9,name:'Insulated tumbler',sub:'30oz · olive green',price:30,cat:'drinkware',sizes:null,icon:'ti-cup'},
+  {id:10,name:'ΚΔ mug',sub:'15oz ceramic · dishwasher safe',price:14,cat:'drinkware',sizes:null,icon:'ti-coffee'},
+  {id:11,name:'Water bottle',sub:'Stainless steel · 24oz',price:24,cat:'drinkware',sizes:null,icon:'ti-bottle'},
+];
+
+// ── STATE ─────────────────────────────────────────────
+let cart={}, suState={}, selectedSizes={}, photos=[], currentAlbum='all', currentMerchFilter='all';
+
+// ── AUTH ──────────────────────────────────────────────
+function doLogin(){
+  const email=document.getElementById('emailIn').value.trim();
+  const pass=document.getElementById('passIn').value;
+  if(!email||pass!=='kappadelta'){document.getElementById('loginErr').style.display='block';return;}
+  document.getElementById('loginErr').style.display='none';
+  const raw=email.split('@')[0].replace(/[._]/g,' ');
+  const name=raw.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+  const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('tbUser').textContent=name;
+  document.getElementById('homeName').textContent=name.split(' ')[0];
+  document.getElementById('profName').textContent=name;
+  document.getElementById('profAv').textContent=initials;
+  document.getElementById('loginScreen').style.display='none';
+  const ps=document.getElementById('portalScreen');
+  ps.style.display='flex'; ps.style.flexDirection='column';
+}
+function doLogout(){
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('portalScreen').style.display='none';
+  document.getElementById('emailIn').value='';
+  document.getElementById('passIn').value='';
+  showTab('home',document.querySelector('.nav-tab'));
+}
+document.getElementById('passIn').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// ── NAV ───────────────────────────────────────────────
+function navTabFor(id){return document.querySelector(`.nav-tab[onclick*="'${id}'"]`);}
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const sec=document.getElementById('sec-'+id);
+  if(sec) sec.classList.add('active');
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── MEALS ─────────────────────────────────────────────
+function rsvpMeal(btn,choice){
+  const row=btn.closest('div[style]');
+  row.querySelectorAll('.yn-btn').forEach(b=>{b.classList.remove('sel-yes','sel-no');b.style.opacity='0.5';});
+  btn.style.opacity='1';
+  btn.classList.add(choice==='yes'?'sel-yes':'sel-no');
+}
+function homeRSVP(choice,btn){
+  const cont=btn.parentElement;
+  cont.querySelectorAll('.yn-btn').forEach(b=>{b.classList.remove('sel-yes','sel-no');b.style.opacity='0.5';});
+  btn.style.opacity='1';
+  btn.classList.add(choice==='yes'?'sel-yes':'sel-no');
+}
+
+// ── CALENDAR ──────────────────────────────────────────
+function buildCal(){
+  const evMap={26:['Social','Study hrs'],4:['4th social'],12:['Meeting'],15:['Merch deadline']};
+  let html='';
+  for(let d=1;d<=30;d++){
+    const today=d===26, evs=evMap[d]||[];
+    html+=`<div class="cal-cell${today?' today':''}">`
+      +`<div class="cal-num${today?' today'':''}">${d}</div>`
+      +evs.map(e=>`<div class="cal-ev">${e}</div>`).join('')
+      +'</div>';
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+
+// ── MINUTES ───────────────────────────────────────────
+function buildMinutes(){
+  document.getElementById('minutesList').innerHTML=MINUTES.map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:0.8rem 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="toggleMin(${i})">
+      <i class="ti ti-notes" style="color:var(--g);font-size:20px;flex-shrink:0;"></i>
+      <div style="flex:1;font-size:14px;font-weight:600;">${m.title}</div>
+      <i class="ti ti-chevron-down" id="mic${i}" style="color:var(--text3);font-size:14px;transition:transform .2s;flex-shrink:0;"></i>
+    </div>
+    <div id="mb${i}" style="display:none;font-size:13px;color:var(--text2);line-height:1.7;padding:0.75rem 0 0.75rem 2rem;border-bottom:1px solid var(--border);">${m.body}</div>
+  `).join('');
+}
+function toggleMin(i){
+  const b=document.getElementById('mb'+i),ic=document.getElementById('mic'+i),open=b.style.display==='block';
+  b.style.display=open?'none':'block';
+  ic.style.transform=open?'':'rotate(180deg)';
+}
+
+// ── EXEC ──────────────────────────────────────────────
+function buildExec(){
+  document.getElementById('execGrid').innerHTML=EXEC.map(e=>`
+    <div class="exec-card">
+      <div class="exec-av">${e.init}</div>
+      <div style="font-size:14px;font-weight:700;">${e.name}</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">${e.role}</div>
+      <div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-top:4px;"><i class="ti ti-mail"></i> ${e.email}</div>
+      <div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-top:4px;"><i class="ti ti-phone"></i> ${e.phone}</div>
+    </div>
+  `).join('');
+}
+
+// ── SIGN-UPS ──────────────────────────────────────────
+function buildSignups(){
+  document.getElementById('suList').innerHTML=SU.map(ev=>`
+    <div class="su-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div style="font-size:15px;font-weight:700;">${ev.name}</div>
+        <span class="badge badge-g" id="suct${ev.id}">${ev.names.length} signed up</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;"><i class="ti ti-calendar" style="font-size:13px;"></i> ${ev.meta}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;" id="sunames${ev.id}">
+        ${ev.names.map(n=>`<span class="pill">${n}</span>`).join('')}
+      </div>
+      <button class="btn btn-g" id="subtn${ev.id}" onclick="toggleSU(${ev.id})">Sign me up</button>
+    </div>
+  `).join('')
+  +`<div class="su-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div style="font-size:15px;font-weight:700;">Recruitment orientation</div><span class="badge badge-a">Required · 30 confirmed</span></div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:12px;"><i class="ti ti-calendar" style="font-size:13px;"></i> Aug 17 · 10:00 AM · Chapter house</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;"><span class="pill">All active members</span></div>
+    <button class="btn btn-ghost" disabled>Required for all</button>
+  </div>`;
+}
+function toggleSU(id){
+  const ev=SU.find(e=>e.id===id);
+  const btn=document.getElementById('subtn'+id);
+  const ct=document.getElementById('suct'+id);
+  const names=document.getElementById('sunames'+id);
+  if(!suState[id]){
+    suState[id]=true; ev.names.push('You');
+    btn.textContent='Remove my sign-up'; btn.classList.remove('btn-g'); btn.classList.add('btn-ghost');
+    const pill=document.createElement('span'); pill.className='pill'; pill.id='mypill'+id; pill.textContent='You';
+    names.appendChild(pill);
+  } else {
+    suState[id]=false; ev.names=ev.names.filter(n=>n!=='You');
+    btn.textContent='Sign me up'; btn.classList.add('btn-g'); btn.classList.remove('btn-ghost');
+    const pill=document.getElementById('mypill'+id); if(pill) pill.remove();
+  }
+  ct.textContent=ev.names.length+' signed up';
+}
+
+// ── MEDIA ─────────────────────────────────────────────
+function buildMediaGrid(){
+  const filtered=currentAlbum==='all'?photos:photos.filter(p=>p.album===currentAlbum);
+  document.getElementById('mediaGrid').innerHTML=
+    filtered.map(p=>`<div class="media-cell"><img src="${p.src}" alt="Chapter photo"/></div>`).join('')
+    +`<div class="media-cell add-cell" onclick="document.getElementById('photoInput').click()"><i class="ti ti-plus" style="font-size:26px;color:var(--g);"></i><span>Add photo</span></div>`;
+}
+function setAlbum(a,el){
+  currentAlbum=a;
+  document.querySelectorAll('#albumFilters .filter-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  buildMediaGrid();
+}
+function addPhoto(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{photos.push({src:ev.target.result,album:currentAlbum==='all'?'social':currentAlbum});buildMediaGrid();};
+  reader.readAsDataURL(file); e.target.value='';
+}
+
+// ── MERCH ─────────────────────────────────────────────
+function filterMerch(cat,el){
+  currentMerchFilter=cat;
+  document.querySelectorAll('#merchFilters .filter-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderMerch();
+}
+function renderMerch(){
+  const items=currentMerchFilter==='all'?MERCH:MERCH.filter(m=>m.cat===currentMerchFilter);
+  document.getElementById('merchGrid').innerHTML=items.map(m=>`
+    <div class="merch-card">
+      <div class="merch-img"><i class="ti ${m.icon}" style="font-size:48px;color:var(--gm);"></i></div>
+      <div class="merch-body">
+        <div class="merch-name">${m.name}</div>
+        <div class="merch-sub">${m.sub}</div>
+        ${m.sizes?`<div class="size-pills">${m.sizes.map(s=>`<div class="size-pill${selectedSizes[m.id]===s?' sel':''}" onclick="selectSize(${m.id},'${s}',this)">${s}</div>`).join('')}</div>`:''}
+        <div class="merch-footer">
+          <div class="merch-price">$${m.price}</div>
+          <button class="btn btn-g" id="abtn${m.id}" onclick="addToCart(${m.id})" ${cart[m.id]?'disabled style="background:var(--bg2);color:var(--text2);border-color:var(--border);cursor:default;"':''}>${cart[m.id]?'In cart':'Add'}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function selectSize(id,size,el){
+  selectedSizes[id]=size;
+  el.closest('.size-pills').querySelectorAll('.size-pill').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function addToCart(id){
+  const m=MERCH.find(x=>x.id===id);
+  if(m.sizes&&!selectedSizes[id]){alert('Please select a size first.');return;}
+  cart[id]={...m,size:selectedSizes[id]||null,qty:1};
+  renderMerch(); renderCart();
+}
+function renderCart(){
+  const keys=Object.keys(cart);
+  const total=keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  document.getElementById('cartCount').textContent=keys.length;
+  document.getElementById('cartBadge').textContent=keys.length+' item'+(keys.length!==1?'s':'');
+  const orderBtn=document.getElementById('orderBtn');
+  const cartTotalEl=document.getElementById('cartTotal');
+  if(keys.length===0){
+    document.getElementById('cartItems').innerHTML='<div style="font-size:13px;color:var(--text3);padding:1rem 0;text-align:center;">Your cart is empty</div>';
+    cartTotalEl.style.display='none'; orderBtn.disabled=true; return;
+  }
+  document.getElementById('cartItems').innerHTML=keys.map(k=>{
+    const it=cart[k];
+    return `<div class="cart-item">
+      <div class="ci-icon"><i class="ti ${it.icon}" style="font-size:20px;color:var(--g);"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:600;">${it.name}</div><div class="rsub">${it.size?'Size: '+it.size+' · ':''}$${it.price} each</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${k},-1)">−</button>
+        <span class="qty-num">${it.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${k},1)">+</button>
+      </div>
+      <span style="font-size:15px;font-weight:700;color:var(--g);margin:0 10px;">$${(it.price*it.qty).toFixed(2)}</span>
+      <button onclick="removeItem(${k})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;" aria-label="Remove"><i class="ti ti-x"></i></button>
+    </div>`;
+  }).join('');
+  cartTotalEl.style.display='flex';
+  document.getElementById('cartTotalVal').textContent='$'+total.toFixed(2);
+  orderBtn.disabled=false;
+}
+function changeQty(id,d){if(!cart[id]) return; cart[id].qty=Math.max(1,cart[id].qty+d); renderCart();}
+function removeItem(id){delete cart[id]; renderMerch(); renderCart();}
+function submitOrder(){
+  cart={}; selectedSizes={};
+  renderMerch(); renderCart();
+  const s=document.getElementById('orderSuccess');
+  s.style.display='block'; setTimeout(()=>{s.style.display='none';},6000);
+}
+
+// ── INIT ──────────────────────────────────────────────
+buildCal(); buildMinutes(); buildExec(); buildSignups(); buildMediaGrid(); renderMerch(); renderCart();
+</script>
+</body>
+</html>
